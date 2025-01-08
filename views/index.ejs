@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Devnet Team Maker</title>
+  <style>
+    table { border-collapse: collapse; }
+    table, th, td { border: 1px solid #ccc; }
+    th, td { padding: 8px; }
+    .error { color: red; }
+    .team-table { margin-bottom: 30px; }
+    .team-title { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Participants</h1>
+  <% if (errorMessage) { %>
+    <p class="error"><%= errorMessage %></p>
+  <% } %>
+  <table class="team-table">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Year</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% participants.forEach(p => { %>
+        <tr>
+          <td><%= p.firstName %></td>
+          <td><%= p.lastName %></td>
+          <td><%= p.year %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+    <h4>Total number of participants: <%= participants.length %></h4>
+  </table>
+  <h2>Add Participant</h2>
+  <form action="/add-participant" method="POST">
+    <label>First Name</label>
+    <input type="text" name="firstName" />
+    <label>Last Name</label>
+    <input type="text" name="lastName" />
+    <label>Year</label>
+    <input type="number" name="year" />
+    <button type="submit">Add Participant</button>
+  </form>
+  <h2>Randomize Teams</h2>
+  <form action="/randomize" method="POST">
+    <label>Password:</label>
+    <input type="password" name="password" />
+    <button type="submit">Start Randomization</button>
+  </form>
+  <h2>Delete Participant</h2>
+  <form action="/delete-participant" method="POST">
+    <label>First Name</label>
+    <input type="text" name="firstName" />
+    <label>Last Name</label>
+    <input type="text" name="lastName" />
+    <label>Year</label>
+    <input type="number" name="year" />
+    <label>Password:</label>
+    <input type="password" name="password" />
+    <button type="submit">Delete</button>
+  </form>
+  <% if (formedTeams && formedTeams.length > 0) { %>
+    <h2 class="team-title">Formed Teams</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Team</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Year</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% formedTeams.forEach((team, i) => { %>
+          <% team.members.forEach(m => { %>
+            <tr>
+              <td>Team <%= i+1 %></td>
+              <td><%= m.firstName %></td>
+              <td><%= m.lastName %></td>
+              <td><%= m.year %></td>
+            </tr>
+          <% }) %>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</body>
+</html>
